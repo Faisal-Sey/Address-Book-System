@@ -1,2 +1,2 @@
 # Address-Book-System
-# Run docker-compose up to start server
+Run docker-compose up to start server
