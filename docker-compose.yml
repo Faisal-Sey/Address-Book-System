@@ -1,10 +1,25 @@
-version: '3'
+version: '3.9'
 
 services:
-    python:
-        image: python:3.10
+    db:
+        image: postgres
         volumes:
-            - ./address_book_main:/address_book_main
+        - ./data/db:/var/lib/postgresql/dat
+        extra_hosts:
+        - "host.docker.internal:host-gateway"
+
+    web:
+        build: .
+        command: python /address_book_main/address_book_main/manage.py runserver 0.0.0.0:8000
+        volumes:
+        - .:/address_book_main
         ports:
-            - 8000:8000
-        command: bash -c "cd ./address_book_main && pip install -r requirements.txt && python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+        - 8000:8000
+        depends_on:
+        - db
+        extra_hosts:
+        - "host.docker.internal:host-gateway"
+
+
+volumes:
+  postgres_data:

@@ -89,8 +89,8 @@ DATABASES = {
         'NAME': env('db_name'),
         'USER': env('db_user'),
         'PASSWORD': env('db_password'),
-        'HOST': env('db_host'),
-        'PORT': '',
+        'HOST': env("db_host"),
+        'PORT': '5432',
     }
 }
 
