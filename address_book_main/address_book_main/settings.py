@@ -83,16 +83,23 @@ WSGI_APPLICATION = 'address_book_main.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('db_name'),
-        'USER': env('db_user'),
-        'PASSWORD': env('db_password'),
-        'HOST': env("db_host"),
-        'PORT': '5432',
+if env('db_type') != 'SQLITE3':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': env('db_name'),
+            'USER': env('db_user'),
+            'PASSWORD': env('db_password'),
+            'HOST': env("db_host"),
+            'PORT': '5432',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+        }
+    }
 
 
 # Password validation
