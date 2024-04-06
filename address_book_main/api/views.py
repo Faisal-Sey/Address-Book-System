@@ -151,13 +151,22 @@ def post_mail(request, *args, **kwargs):
     email = post_data.get("email")
     message = post_data.get("message")
     subject = post_data.get("subject")
+    message_type = post_data.get("message_type", "text")
+
+    send_mail_options = {
+        "subject": subject,
+        "from_email": settings.EMAIL_HOST_USER,
+        "recipient_list": [email],
+    }
+
+    if message_type == "text":
+        send_mail_options["message"] = message
+    else:
+        send_mail_options["message"] = ""
+        send_mail_options["html_message"] = message
+
     try:
-        send_mail(
-            subject=subject,
-            message=message,
-            from_email=settings.EMAIL_HOST_USER,
-            recipient_list=[email],
-        )
+        send_mail(**send_mail_options)
         return JsonResponse({"status": "success", "message": "Email sent!"})
     except Exception:
         return JsonResponse({"status": "error", "message": "Email not sent!"})
